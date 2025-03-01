@@ -14,6 +14,13 @@ async function fetchProjects() {
     }
 }
 
+// Truncate long text
+function truncateText(text, maxLength = 150) {
+    if (!text) return "No description provided";
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + '...';
+}
+
 // Display Projects
 function displayProjects(projects) {
     const projectsGrid = document.getElementById('projects-grid');
@@ -24,7 +31,7 @@ function displayProjects(projects) {
                     ${project.name}
                 </a>
             </h3>
-            <p>${project.description}</p>
+            <p>${truncateText(project.description)}</p>
             <div class="project-meta">
                 <span class="repository">
                     <i class="fas fa-code-branch"></i> ${project.repository}
