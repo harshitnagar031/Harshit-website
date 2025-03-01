@@ -8,7 +8,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import { apiRequest } from "@/lib/queryClient";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Name is required"),
@@ -31,13 +30,20 @@ export function ContactSection() {
 
   const onSubmit = async (data: ContactForm) => {
     try {
-      await apiRequest('/api/contact', {
+      const response = await fetch('/api/contact', {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(data),
       });
 
+      if (!response.ok) {
+        throw new Error('Failed to send message');
+      }
+
       toast({
-        title: "Message sent!",
+        title: "Success!",
         description: "Thank you for your message. I'll get back to you soon.",
       });
 
