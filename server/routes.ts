@@ -1,12 +1,13 @@
 import type { Express } from "express";
 import { createServer } from "http";
+import { storage } from "./storage";
+import type { InsertContactMessage } from "./storage";
 
 const GITHUB_USERNAME = "harshitnagar22"; 
 
 export async function registerRoutes(app: Express) {
   app.get("/api/github/projects", async (req, res) => {
     try {
-      // Search for all pull requests by the user
       const response = await fetch(`https://api.github.com/search/issues?q=author:${GITHUB_USERNAME}+type:pr&sort=created&order=desc`);
 
       if (!response.ok) {
@@ -35,16 +36,28 @@ export async function registerRoutes(app: Express) {
   // Contact form endpoint
   app.post("/api/contact", async (req, res) => {
     try {
-      const { name, email, message } = req.body;
+      const message: InsertContactMessage = {
+        name: req.body.name,
+        email: req.body.email,
+        message: req.body.message
+      };
 
-      // Here you would typically integrate with an email service
-      // For now, we'll just log the message and return success
-      console.log('Contact form submission:', { name, email, message });
-
+      await storage.createMessage(message);
       res.json({ success: true, message: "Message received successfully" });
     } catch (error) {
       console.error('Error processing contact form:', error);
       res.status(500).json({ error: "Failed to process contact form submission" });
+    }
+  });
+
+  // Admin endpoint to view messages
+  app.get("/api/admin/messages", async (req, res) => {
+    try {
+      const messages = await storage.getMessages();
+      res.json(messages);
+    } catch (error) {
+      console.error('Error fetching messages:', error);
+      res.status(500).json({ error: "Failed to fetch messages" });
     }
   });
 
