@@ -15,10 +15,20 @@ async function fetchProjects() {
 }
 
 // Truncate long text
-function truncateText(text, maxLength = 150) {
+function truncateText(text, maxLength = 100) {
     if (!text) return "No description provided";
-    if (text.length <= maxLength) return text;
-    return text.substring(0, maxLength) + '...';
+
+    // Remove PR checklist and links if present
+    if (text.includes("Pull Request Readiness Checklist")) {
+        text = text.split("Pull Request Readiness Checklist")[0];
+    }
+
+    // Clean up markdown headers and links
+    text = text.replace(/#+\s/g, ''); // Remove markdown headers
+    text = text.replace(/\[.*?\]\(.*?\)/g, ''); // Remove markdown links
+
+    if (text.length <= maxLength) return text.trim();
+    return text.substring(0, maxLength).trim() + '...';
 }
 
 // Display Projects
