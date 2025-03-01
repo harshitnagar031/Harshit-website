@@ -7,6 +7,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { useToast } from "@/hooks/use-toast";
+import { apiRequest } from "@/lib/queryClient";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Name is required"),
@@ -17,6 +19,7 @@ const contactSchema = z.object({
 type ContactForm = z.infer<typeof contactSchema>;
 
 export function ContactSection() {
+  const { toast } = useToast();
   const form = useForm<ContactForm>({
     resolver: zodResolver(contactSchema),
     defaultValues: {
@@ -26,9 +29,26 @@ export function ContactSection() {
     }
   });
 
-  const onSubmit = (data: ContactForm) => {
-    console.log(data);
-    // Handle form submission
+  const onSubmit = async (data: ContactForm) => {
+    try {
+      await apiRequest('/api/contact', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      });
+
+      toast({
+        title: "Message sent!",
+        description: "Thank you for your message. I'll get back to you soon.",
+      });
+
+      form.reset();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to send message. Please try again later.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -57,7 +77,7 @@ export function ContactSection() {
                             className="bg-[#373E47] text-[#ADBAC7] border-[#444C56]"
                           />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="text-red-400" />
                       </FormItem>
                     )}
                   />
@@ -74,7 +94,7 @@ export function ContactSection() {
                             className="bg-[#373E47] text-[#ADBAC7] border-[#444C56]"
                           />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="text-red-400" />
                       </FormItem>
                     )}
                   />
@@ -91,15 +111,16 @@ export function ContactSection() {
                             rows={5}
                           />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="text-red-400" />
                       </FormItem>
                     )}
                   />
                   <Button
                     type="submit"
-                    className="w-full bg-[#347D39] text-white hover:bg-[#46954A]"
+                    className="w-full bg-[#347D39] text-white hover:bg-[#46954A] transition-colors"
+                    disabled={form.formState.isSubmitting}
                   >
-                    Send Message
+                    {form.formState.isSubmitting ? "Sending..." : "Send Message"}
                   </Button>
                 </form>
               </Form>

@@ -32,6 +32,22 @@ export async function registerRoutes(app: Express) {
     }
   });
 
+  // Contact form endpoint
+  app.post("/api/contact", async (req, res) => {
+    try {
+      const { name, email, message } = req.body;
+
+      // Here you would typically integrate with an email service
+      // For now, we'll just log the message and return success
+      console.log('Contact form submission:', { name, email, message });
+
+      res.json({ success: true, message: "Message received successfully" });
+    } catch (error) {
+      console.error('Error processing contact form:', error);
+      res.status(500).json({ error: "Failed to process contact form submission" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }
