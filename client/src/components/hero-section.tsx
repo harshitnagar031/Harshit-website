@@ -25,19 +25,17 @@ export function HeroSection() {
             transition={{ delay: 0.2, duration: 0.5 }}
             className="mb-8"
           >
-            <div className="relative inline-block">
-              <motion.h1 
-                className="text-5xl md:text-7xl font-bold text-white mb-6 font-mono"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.5 }}
-              >
-                Hello, I'm{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
-                  Your Name
-                </span>
-              </motion.h1>
-            </div>
+            <motion.h1 
+              className="text-5xl md:text-7xl font-bold text-white mb-6 font-mono"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+            >
+              <span className="text-white">Hello, I'm </span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+                Harshit Nagar
+              </span>
+            </motion.h1>
             <motion.p 
               className="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
