@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer } from "http";
 
-const GITHUB_USERNAME = "octocat"; // Using GitHub's demo account as default
+const GITHUB_USERNAME = "harshitnagar22"; 
 
 export async function registerRoutes(app: Express) {
   app.get("/api/github/projects", async (req, res) => {
