@@ -39,10 +39,6 @@ function displayProjects(projects) {
                 <span class="date">
                     <i class="fas fa-calendar"></i> ${project.created_at}
                 </span>
-                <span class="status ${project.merged ? 'merged' : 'open'}">
-                    <i class="fas ${project.merged ? 'fa-check-circle' : 'fa-clock'}"></i>
-                    ${project.merged ? 'Merged' : 'Open'}
-                </span>
             </div>
         </div>
     `).join('');
