@@ -14,21 +14,28 @@ async function fetchProjects() {
     }
 }
 
-// Truncate long text
-function truncateText(text, maxLength = 100) {
+// Extract meaningful description from PR body
+function extractDescription(text) {
     if (!text) return "No description provided";
 
-    // Remove PR checklist and links if present
-    if (text.includes("Pull Request Readiness Checklist")) {
-        text = text.split("Pull Request Readiness Checklist")[0];
+    // Remove common PR templates and checklists
+    let description = text.split(/###|Pull Request Readiness Checklist/)[0];
+
+    // Clean up markdown
+    description = description
+        .replace(/#+\s/g, '')  // Remove headers
+        .replace(/\[.*?\]\(.*?\)/g, '') // Remove links
+        .replace(/\n+/g, ' ')  // Replace multiple newlines with space
+        .replace(/\s+/g, ' ')  // Replace multiple spaces with single space
+        .trim();
+
+    // If description is too long, truncate it
+    const maxLength = 100;
+    if (description.length > maxLength) {
+        description = description.substring(0, maxLength).trim() + '...';
     }
 
-    // Clean up markdown headers and links
-    text = text.replace(/#+\s/g, ''); // Remove markdown headers
-    text = text.replace(/\[.*?\]\(.*?\)/g, ''); // Remove markdown links
-
-    if (text.length <= maxLength) return text.trim();
-    return text.substring(0, maxLength).trim() + '...';
+    return description || "No description provided";
 }
 
 // Display Projects
@@ -41,7 +48,7 @@ function displayProjects(projects) {
                     ${project.name}
                 </a>
             </h3>
-            <p>${truncateText(project.description)}</p>
+            <p>${extractDescription(project.description)}</p>
             <div class="project-meta">
                 <span class="repository">
                     <i class="fas fa-code-branch"></i> ${project.repository}
