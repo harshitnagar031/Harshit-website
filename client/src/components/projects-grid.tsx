@@ -3,17 +3,18 @@ import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useQuery } from "@tanstack/react-query";
-import { Star } from "lucide-react";
+import { GitPullRequest, Calendar } from "lucide-react";
 import type { Project } from "@shared/schema";
+import { format } from "date-fns";
 
 export function ProjectsGrid() {
   const { data: projects, isLoading, error } = useQuery<Project[]>({ 
-    queryKey: ['/api/github/projects']
+    queryKey: ['/api/github/pull-requests']
   });
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {[...Array(6)].map((_, i) => (
           <Card key={i} className="bg-[#2D333B] border-none">
             <CardHeader>
@@ -29,42 +30,43 @@ export function ProjectsGrid() {
   }
 
   if (error) {
-    return <div className="text-red-500">Failed to load projects</div>;
+    return <div className="text-red-500">Failed to load pull requests</div>;
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {projects?.map((project, i) => (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {projects?.map((pr, i) => (
         <motion.div
-          key={project.id}
+          key={pr.id}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: i * 0.1 }}
         >
           <Card className="bg-[#2D333B] border-none hover:bg-[#373E47] transition-colors">
             <CardHeader>
-              <h3 className="text-xl font-semibold font-mono text-[#ADBAC7]">
-                <a href={project.url} target="_blank" rel="noopener noreferrer"
-                   className="hover:text-blue-400">
-                  {project.name}
-                </a>
-              </h3>
+              <div className="flex items-center gap-2">
+                <GitPullRequest className="w-5 h-5 text-green-500" />
+                <h3 className="text-lg font-semibold font-mono text-[#ADBAC7]">
+                  <a href={pr.url} target="_blank" rel="noopener noreferrer"
+                     className="hover:text-blue-400">
+                    {pr.title || pr.name}
+                  </a>
+                </h3>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-[#768390] mt-2">
+                <Calendar className="w-4 h-4" />
+                <span>{format(new Date(pr.createdAt), 'MMM d, yyyy')}</span>
+              </div>
             </CardHeader>
             <CardContent>
-              <p className="text-[#768390] mb-4 font-mono">{project.description}</p>
-              <div className="flex gap-4 items-center">
-                <div className="flex items-center gap-1">
-                  <Star className="w-4 h-4 text-yellow-400" />
-                  <span className="text-sm text-[#768390]">{project.stars}</span>
-                </div>
-                {project.language && (
+              <p className="text-[#768390] mb-4 font-mono">{pr.description}</p>
+              <div className="flex flex-wrap gap-2 mt-4">
+                {pr.repository && (
                   <Badge variant="secondary" className="bg-[#347D39] text-white">
-                    {project.language}
+                    {pr.repository}
                   </Badge>
                 )}
-              </div>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {project.topics.map((topic) => (
+                {pr.topics?.map((topic) => (
                   <Badge key={topic} variant="outline" className="text-blue-400 border-blue-800">
                     {topic}
                   </Badge>
@@ -74,6 +76,11 @@ export function ProjectsGrid() {
           </Card>
         </motion.div>
       ))}
+      {projects?.length === 0 && (
+        <div className="col-span-2 text-center text-[#768390]">
+          No pull requests found
+        </div>
+      )}
     </div>
   );
 }
