@@ -13,14 +13,14 @@ export function ProjectsGrid() {
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {[...Array(6)].map((_, i) => (
           <Card key={i} className="bg-black/20 backdrop-blur-lg border border-white/10 hover:border-white/20 transition-all duration-300">
-            <CardHeader>
-              <Skeleton className="h-6 w-3/4 bg-white/5" />
+            <CardHeader className="p-6">
+              <Skeleton className="h-8 w-3/4 bg-white/5" />
             </CardHeader>
-            <CardContent>
-              <Skeleton className="h-20 w-full bg-white/5" />
+            <CardContent className="p-6 pt-0">
+              <Skeleton className="h-24 w-full bg-white/5" />
             </CardContent>
           </Card>
         ))}
@@ -33,7 +33,7 @@ export function ProjectsGrid() {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {projects?.map((project, i) => (
         <motion.div
           key={project.id}
@@ -41,9 +41,9 @@ export function ProjectsGrid() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: i * 0.1 }}
         >
-          <Card className="bg-black/20 backdrop-blur-lg border border-white/10 hover:border-white/20 transition-all duration-300 group">
-            <CardHeader>
-              <h3 className="text-xl font-semibold font-mono text-white group-hover:text-indigo-400 transition-colors">
+          <Card className="bg-black/20 backdrop-blur-lg border border-white/10 hover:border-white/20 transition-all duration-300 group h-full">
+            <CardHeader className="p-6">
+              <h3 className="text-2xl font-semibold font-mono text-white group-hover:text-indigo-400 transition-colors">
                 <a
                   href={project.url}
                   target="_blank"
@@ -54,15 +54,15 @@ export function ProjectsGrid() {
                 </a>
               </h3>
             </CardHeader>
-            <CardContent>
-              <p className="text-gray-400 mb-6 font-mono">{project.description}</p>
-              <div className="flex gap-4 items-center mb-4">
-                <div className="flex items-center gap-1 text-yellow-500">
-                  <Star className="w-4 h-4" />
-                  <span className="text-sm">{project.stars}</span>
+            <CardContent className="p-6 pt-0">
+              <p className="text-gray-400 mb-8 font-mono text-lg">{project.description}</p>
+              <div className="flex gap-6 items-center mb-6">
+                <div className="flex items-center gap-2 text-yellow-500">
+                  <Star className="w-5 h-5" />
+                  <span className="text-base">{project.stars}</span>
                 </div>
                 {project.language && (
-                  <Badge variant="outline" className="bg-indigo-500/10 text-indigo-400 border-indigo-500/20">
+                  <Badge variant="outline" className="bg-indigo-500/10 text-indigo-400 border-indigo-500/20 text-base px-4 py-1">
                     {project.language}
                   </Badge>
                 )}
@@ -72,7 +72,7 @@ export function ProjectsGrid() {
                   <Badge 
                     key={topic} 
                     variant="outline" 
-                    className="bg-purple-500/10 text-purple-400 border-purple-500/20 hover:bg-purple-500/20 transition-colors"
+                    className="bg-purple-500/10 text-purple-400 border-purple-500/20 hover:bg-purple-500/20 transition-colors text-base"
                   >
                     {topic}
                   </Badge>
