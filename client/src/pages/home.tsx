@@ -2,7 +2,6 @@ import { HeroSection } from "@/components/hero-section";
 import { AboutSection } from "@/components/about-section";
 import { SkillsSection } from "@/components/skills-section";
 import { ProjectsGrid } from "@/components/projects-grid";
-import { ContactSection } from "@/components/contact-section";
 
 export default function Home() {
   return (
@@ -16,7 +15,6 @@ export default function Home() {
         <ProjectsGrid />
       </div>
       <SkillsSection />
-      <ContactSection />
     </div>
   );
 }
