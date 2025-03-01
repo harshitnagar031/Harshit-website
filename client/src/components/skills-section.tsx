@@ -21,7 +21,7 @@ export function SkillsSection() {
           <h2 className="text-3xl font-bold text-[#ADBAC7] mb-8 font-mono">Skills</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {skills.map((skillSet, index) => (
-              <Card key={index} className="bg-[#2D333B]">
+              <Card key={index} className="bg-[#2D333B] border-none">
                 <CardContent className="p-6">
                   <h3 className="text-xl font-semibold text-[#ADBAC7] mb-4 font-mono">
                     {skillSet.category}
@@ -31,7 +31,7 @@ export function SkillsSection() {
                       <Badge
                         key={skill}
                         variant="secondary"
-                        className="bg-[#347D39] text-white"
+                        className="bg-[#347D39] text-white hover:bg-[#46954A] transition-colors"
                       >
                         {skill}
                       </Badge>

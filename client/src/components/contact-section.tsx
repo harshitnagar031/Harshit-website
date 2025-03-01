@@ -41,7 +41,7 @@ export function ContactSection() {
           viewport={{ once: true }}
         >
           <h2 className="text-3xl font-bold text-[#ADBAC7] mb-8 font-mono">Contact Me</h2>
-          <Card className="bg-[#2D333B] max-w-2xl mx-auto">
+          <Card className="bg-[#2D333B] max-w-2xl mx-auto border-none">
             <CardContent className="p-6">
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -54,7 +54,7 @@ export function ContactSection() {
                         <FormControl>
                           <Input
                             {...field}
-                            className="bg-[#373e47] text-[#ADBAC7] border-[#444c56]"
+                            className="bg-[#373E47] text-[#ADBAC7] border-[#444C56]"
                           />
                         </FormControl>
                         <FormMessage />
@@ -71,7 +71,7 @@ export function ContactSection() {
                           <Input
                             {...field}
                             type="email"
-                            className="bg-[#373e47] text-[#ADBAC7] border-[#444c56]"
+                            className="bg-[#373E47] text-[#ADBAC7] border-[#444C56]"
                           />
                         </FormControl>
                         <FormMessage />
@@ -87,7 +87,7 @@ export function ContactSection() {
                         <FormControl>
                           <Textarea
                             {...field}
-                            className="bg-[#373e47] text-[#ADBAC7] border-[#444c56]"
+                            className="bg-[#373E47] text-[#ADBAC7] border-[#444C56]"
                             rows={5}
                           />
                         </FormControl>
@@ -97,7 +97,7 @@ export function ContactSection() {
                   />
                   <Button
                     type="submit"
-                    className="w-full bg-[#347D39] text-white hover:bg-[#46954a]"
+                    className="w-full bg-[#347D39] text-white hover:bg-[#46954A]"
                   >
                     Send Message
                   </Button>
