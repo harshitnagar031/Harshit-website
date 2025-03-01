@@ -26,17 +26,12 @@ function displayProjects(projects) {
             </h3>
             <p>${project.description}</p>
             <div class="project-meta">
-                <span class="stars">
-                    <i class="fas fa-star"></i> ${project.stars}
+                <span class="repository">
+                    <i class="fas fa-code-branch"></i> ${project.repository}
                 </span>
-                ${project.language ? 
-                    `<span class="tag">${project.language}</span>` : 
-                    ''}
-            </div>
-            <div class="skills-tags">
-                ${project.topics.map(topic => 
-                    `<span class="tag">${topic}</span>`
-                ).join('')}
+                <span class="date">
+                    <i class="fas fa-calendar"></i> ${project.created_at}
+                </span>
             </div>
         </div>
     `).join('');
@@ -45,14 +40,13 @@ function displayProjects(projects) {
 // Handle Contact Form
 document.getElementById('contact-form').addEventListener('submit', async (e) => {
     e.preventDefault();
-    
+
     const formData = {
         name: e.target.name.value,
         email: e.target.email.value,
         message: e.target.message.value
     };
 
-    // Here you would typically send the form data to your backend
     console.log('Form submitted:', formData);
     alert('Thank you for your message! I will get back to you soon.');
     e.target.reset();
