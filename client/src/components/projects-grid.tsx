@@ -5,9 +5,17 @@ import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export function ProjectsGrid() {
-  const { data: pullRequests, isLoading, error } = useQuery<any[]>({
-    queryKey: ['/api/github/pull-requests']
+  const { data: pullRequests, isLoading, error } = useQuery({
+    queryKey: ['/api/github/pull-requests'],
+    onError: (error) => {
+      console.error('Failed to fetch pull requests:', error);
+    },
+    onSuccess: (data) => {
+      console.log('Successfully fetched pull requests:', data);
+    }
   });
+
+  console.log('ProjectsGrid render:', { pullRequests, isLoading, error });
 
   if (isLoading) {
     return (
@@ -30,17 +38,27 @@ export function ProjectsGrid() {
   }
 
   if (error) {
-    return <div className="text-red-500">Failed to load pull requests</div>;
+    console.error('Error details:', error);
+    return (
+      <div className="text-red-500 p-4 bg-[#2D333B] rounded-lg">
+        Failed to load pull requests. Please try again later.
+        {error instanceof Error && <p className="text-sm mt-2">{error.message}</p>}
+      </div>
+    );
   }
 
   if (!pullRequests || pullRequests.length === 0) {
-    return <div className="text-[#ADBAC7]">No pull requests found.</div>;
+    return (
+      <div className="text-[#ADBAC7] p-4 bg-[#2D333B] rounded-lg">
+        No pull requests found for this GitHub account.
+      </div>
+    );
   }
 
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {pullRequests.map((pr, i) => (
+        {pullRequests.map((pr: any, i: number) => (
           <motion.div
             key={pr.id}
             initial={{ opacity: 0, x: -20 }}
